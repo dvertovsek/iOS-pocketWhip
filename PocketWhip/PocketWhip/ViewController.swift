@@ -33,6 +33,7 @@ class ViewController: UIViewController {
         }
         
         avPlayer.numberOfLoops = 1
+        avPlayer.volume = 0.2
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,14 +47,13 @@ class ViewController: UIViewController {
     
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
         if motion == .MotionShake{
-            if segmentController.selectedSegmentIndex == 0
+            AudioServicesPlaySystemSound(self.whipSound)
+            if segmentController.selectedSegmentIndex == 1
             {
-                AudioServicesPlaySystemSound(self.whipSound)
-            }
-            else if segmentController.selectedSegmentIndex == 1
-            {
-                AudioServicesPlaySystemSound(self.whipSound)
-                self.avPlayer.play()
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0))
+                {
+                    self.avPlayer.play()
+                }
             }
             
         }
